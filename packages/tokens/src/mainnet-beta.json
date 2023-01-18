@@ -401,5 +401,10 @@
     "mintAddress": "DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263",
     "tokenName": "Bonk",
     "tokenSymbol": "BONK"
+  },
+  {
+    "mintAddress": "DeoP2swMNa9d4SGcQkR82j4RYYeNhDjcTCwyzEhKwfAf",
+    "tokenName": "Deo",
+    "tokenSymbol": "DEO"
   }
 ]
