@@ -703,16 +703,21 @@ export class Market {
 
     let openOrdersAddress: PublicKey;
     if (openOrdersAccounts.length === 0) {
+      const marketAddress = this.address.toBase58();
+      const seed = marketAddress.slice(0, 32);
+
       let account;
+
       if (openOrdersAccount) {
         account = openOrdersAccount;
       } else {
-        const marketAddress = this.address.toBase58();
-        account = PublicKey.createWithSeed(
-          ownerAddress,
-          marketAddress.slice(0, 32),
-          this.programId,
-        );
+        account = {
+          publicKey: await PublicKey.createWithSeed(
+            ownerAddress,
+            seed,
+            this.programId,
+          ),
+        };
       }
       transaction.add(
         await OpenOrders.makeCreateAccountTransaction(
@@ -721,10 +726,11 @@ export class Market {
           ownerAddress,
           account.publicKey,
           this._programId,
+          seed,
         ),
       );
       openOrdersAddress = account.publicKey;
-      signers.push(account);
+      // signers.push(ownerAddress);
       // refresh the cache of open order accounts on next fetch
       this._openOrdersAccountsCache[ownerAddress.toBase58()].ts = 0;
     } else if (openOrdersAccount) {
@@ -1776,10 +1782,13 @@ export class OpenOrders {
     ownerAddress: PublicKey,
     newAccountAddress: PublicKey,
     programId: PublicKey,
+    seed: string,
   ) {
-    return SystemProgram.createAccount({
+    return SystemProgram.createAccountWithSeed({
       fromPubkey: ownerAddress,
+      basePubkey: ownerAddress,
       newAccountPubkey: newAccountAddress,
+      seed: seed,
       lamports: await connection.getMinimumBalanceForRentExemption(
         this.getLayout(programId).span,
       ),
