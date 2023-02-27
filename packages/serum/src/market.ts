@@ -703,20 +703,23 @@ export class Market {
 
     let openOrdersAddress: PublicKey;
     if (openOrdersAccounts.length === 0) {
-      const marketAddress = this.address.toBase58();
-      const seed = marketAddress.slice(0, 32);
+      // const marketAddress = this.address.toBase58();
+      // const seed = marketAddress.slice(0, 32);
 
       let account;
 
       if (openOrdersAccount) {
         account = openOrdersAccount;
       } else {
-        account = {
-          publicKey: await PublicKey.createWithSeed(
+        const { ooAccountPubkey, ooAccountSeed } =
+          await OpenOrders.getDerivedOOAcountPubkey(
             ownerAddress,
-            seed,
+            this.address,
             this.programId,
-          ),
+          );
+        account = {
+          publicKey: ooAccountPubkey,
+          seed: ooAccountSeed,
         };
       }
       transaction.add(
@@ -726,7 +729,7 @@ export class Market {
           ownerAddress,
           account.publicKey,
           this._programId,
-          seed,
+          account.seed,
         ),
       );
       openOrdersAddress = account.publicKey;
@@ -1689,6 +1692,20 @@ export class OpenOrders {
     return _OPEN_ORDERS_LAYOUT_V2;
   }
 
+  static async getDerivedOOAcountPubkey(
+    ownerAddress: PublicKey,
+    marketAddress: PublicKey,
+    programId: PublicKey,
+  ) {
+    const seed = marketAddress.toBase58().slice(0, 32);
+    const publicKey = await PublicKey.createWithSeed(
+      ownerAddress,
+      seed,
+      programId,
+    );
+    return { ooAccountPubkey: publicKey, ooAccountSeed: seed };
+  }
+
   static async findForOwner(
     connection: Connection,
     ownerAddress: PublicKey,
@@ -1722,10 +1739,9 @@ export class OpenOrders {
     programId: PublicKey,
   ): Promise<OpenOrders[]> {
     // Try loading seed based accounts
-    const seed = marketAddress.toBase58().slice(0, 32);
-    const ooAccountPubkey = await PublicKey.createWithSeed(
+    const { ooAccountPubkey } = await this.getDerivedOOAcountPubkey(
       ownerAddress,
-      seed,
+      marketAddress,
       programId,
     );
     const ooAccountInfo = await connection.getAccountInfo(ooAccountPubkey);

@@ -186,25 +186,32 @@ export class Swap {
 
     // Direct swap on USD(x).
     if (fromMint.equals(USDC_PUBKEY) || fromMint.equals(USDT_PUBKEY)) {
-      const openOrders = new Account();
+      // const openOrders = new Account();
       const marketAddress = await this.swapMarkets.getMarketAddressIfNeeded(
         fromMint,
         toMint,
       );
+      const { ooAccountPubkey, ooAccountSeed } =
+        await OpenOrders.getDerivedOOAcountPubkey(
+          this.program.provider.wallet.publicKey,
+          marketAddress,
+          DEX_PID,
+        );
       tx.add(
         await OpenOrders.makeCreateAccountTransaction(
           this.program.provider.connection,
           marketAddress,
           this.program.provider.wallet.publicKey,
-          openOrders.publicKey,
+          ooAccountPubkey,
           DEX_PID,
+          ooAccountSeed,
         ),
       );
-      signers.push(openOrders);
+      // signers.push(openOrders);
       tx.add(
         this.program.instruction.initAccount({
           accounts: {
-            openOrders: openOrders.publicKey,
+            openOrders: ooAccountPubkey,
             authority: this.program.provider.wallet.publicKey,
             market: marketAddress,
             dexProgram: DEX_PID,
@@ -215,24 +222,31 @@ export class Swap {
     }
     // Direct swap on USD(x).
     else if (toMint.equals(USDC_PUBKEY) || toMint.equals(USDT_PUBKEY)) {
-      const openOrders = new Account();
+      // const openOrders = new Account();
       const marketAddress = await this.swapMarkets.getMarketAddressIfNeeded(
         toMint,
         fromMint,
       );
+      const { ooAccountPubkey, ooAccountSeed } =
+        await OpenOrders.getDerivedOOAcountPubkey(
+          this.program.provider.wallet.publicKey,
+          marketAddress,
+          DEX_PID,
+        );
       tx.add(
         await OpenOrders.makeCreateAccountTransaction(
           this.program.provider.connection,
           marketAddress,
           this.program.provider.wallet.publicKey,
-          openOrders.publicKey,
+          ooAccountPubkey,
           DEX_PID,
+          ooAccountSeed,
         ),
       );
       tx.add(
         this.program.instruction.initAccount({
           accounts: {
-            openOrders: openOrders.publicKey,
+            openOrders: ooAccountPubkey,
             authority: this.program.provider.wallet.publicKey,
             market: marketAddress,
             dexProgram: DEX_PID,
@@ -240,7 +254,7 @@ export class Swap {
           },
         }),
       );
-      signers.push(openOrders);
+      // signers.push(openOrders);
     }
     // Transitive swap across USD(x).
     else {
@@ -280,20 +294,27 @@ export class Swap {
 
         // No open orders account for the from market, so make it.
         if (!ooAccsFrom[0]) {
-          const ooFrom = new Account();
+          // const ooFrom = new Account();
+          const { ooAccountPubkey, ooAccountSeed } =
+            await OpenOrders.getDerivedOOAcountPubkey(
+              this.program.provider.wallet.publicKey,
+              marketTo,
+              DEX_PID,
+            );
           ixs.push(
             await OpenOrders.makeCreateAccountTransaction(
               this.program.provider.connection,
               marketFrom,
               this.program.provider.wallet.publicKey,
-              ooFrom.publicKey,
+              ooAccountPubkey,
               DEX_PID,
+              ooAccountSeed,
             ),
           );
           ixs.push(
             this.program.instruction.initAccount({
               accounts: {
-                openOrders: ooFrom.publicKey,
+                openOrders: ooAccountPubkey,
                 authority: this.program.provider.wallet.publicKey,
                 market: marketFrom,
                 dexProgram: DEX_PID,
@@ -301,25 +322,32 @@ export class Swap {
               },
             }),
           );
-          sigs.push(ooFrom);
+          // sigs.push(ooFrom);
         }
 
         // No open orders account for the to market, so make it.
         if (!ooAccsTo[0]) {
-          const ooTo = new Account();
+          // const ooTo = new Account();
+          const { ooAccountPubkey, ooAccountSeed } =
+            await OpenOrders.getDerivedOOAcountPubkey(
+              this.program.provider.wallet.publicKey,
+              marketTo,
+              DEX_PID,
+            );
           ixs.push(
             await OpenOrders.makeCreateAccountTransaction(
               this.program.provider.connection,
               marketTo,
               this.program.provider.wallet.publicKey,
-              ooTo.publicKey,
+              ooAccountPubkey,
               DEX_PID,
+              ooAccountSeed,
             ),
           );
           ixs.push(
             this.program.instruction.initAccount({
               accounts: {
-                openOrders: ooTo.publicKey,
+                openOrders: ooAccountPubkey,
                 authority: this.program.provider.wallet.publicKey,
                 market: marketTo,
                 dexProgram: DEX_PID,
@@ -327,7 +355,7 @@ export class Swap {
               },
             }),
           );
-          sigs.push(ooTo);
+          // sigs.push(ooAccountPubkey);
         }
 
         // Done.
@@ -679,16 +707,23 @@ export class Swap {
 
     // Create the open orders account, if needed.
     if (needsOpenOrders) {
-      const oo = new Account();
-      signers.push(oo);
-      openOrders = oo.publicKey;
+      // const oo = new Account();
+      // signers.push(oo);
+      // openOrders = oo.publicKey;
+      const { ooAccountPubkey, ooAccountSeed } =
+        await OpenOrders.getDerivedOOAcountPubkey(
+          this.program.provider.wallet.publicKey,
+          marketClient.address,
+          DEX_PID,
+        );
       ixs.push(
         await OpenOrders.makeCreateAccountTransaction(
           this.program.provider.connection,
           marketClient.address,
           this.program.provider.wallet.publicKey,
-          oo.publicKey,
+          ooAccountPubkey,
           DEX_PID,
+          ooAccountSeed,
         ),
       );
     }
