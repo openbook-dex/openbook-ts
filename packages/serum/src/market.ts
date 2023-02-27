@@ -1720,7 +1720,22 @@ export class OpenOrders {
     marketAddress: PublicKey,
     ownerAddress: PublicKey,
     programId: PublicKey,
-  ) {
+  ): Promise<OpenOrders[]> {
+    // Try loading seed based accounts
+    const seed = marketAddress.toBase58().slice(0, 32);
+    const ooAccountPubkey = await PublicKey.createWithSeed(
+      ownerAddress,
+      seed,
+      programId,
+    );
+    const ooAccountInfo = await connection.getAccountInfo(ooAccountPubkey);
+    if (ooAccountInfo) {
+      return [
+        OpenOrders.fromAccountInfo(ownerAddress, ooAccountInfo, programId),
+      ];
+    }
+
+    // Fallback to legacy gPA loading
     const filters = [
       {
         memcmp: {
