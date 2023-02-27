@@ -712,7 +712,7 @@ export class Market {
         account = openOrdersAccount;
       } else {
         const { ooAccountPubkey, ooAccountSeed } =
-          await OpenOrders.getDerivedOOAcountPubkey(
+          await OpenOrders.getDerivedOOAccountPubkey(
             ownerAddress,
             this.address,
             this.programId,
@@ -1692,7 +1692,7 @@ export class OpenOrders {
     return _OPEN_ORDERS_LAYOUT_V2;
   }
 
-  static async getDerivedOOAcountPubkey(
+  static async getDerivedOOAccountPubkey(
     ownerAddress: PublicKey,
     marketAddress: PublicKey,
     programId: PublicKey,
@@ -1739,7 +1739,7 @@ export class OpenOrders {
     programId: PublicKey,
   ): Promise<OpenOrders[]> {
     // Try loading seed based accounts
-    const { ooAccountPubkey } = await this.getDerivedOOAcountPubkey(
+    const { ooAccountPubkey } = await this.getDerivedOOAccountPubkey(
       ownerAddress,
       marketAddress,
       programId,

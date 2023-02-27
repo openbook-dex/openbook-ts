@@ -192,7 +192,7 @@ export class Swap {
         toMint,
       );
       const { ooAccountPubkey, ooAccountSeed } =
-        await OpenOrders.getDerivedOOAcountPubkey(
+        await OpenOrders.getDerivedOOAccountPubkey(
           this.program.provider.wallet.publicKey,
           marketAddress,
           DEX_PID,
@@ -228,7 +228,7 @@ export class Swap {
         fromMint,
       );
       const { ooAccountPubkey, ooAccountSeed } =
-        await OpenOrders.getDerivedOOAcountPubkey(
+        await OpenOrders.getDerivedOOAccountPubkey(
           this.program.provider.wallet.publicKey,
           marketAddress,
           DEX_PID,
@@ -296,7 +296,7 @@ export class Swap {
         if (!ooAccsFrom[0]) {
           // const ooFrom = new Account();
           const { ooAccountPubkey, ooAccountSeed } =
-            await OpenOrders.getDerivedOOAcountPubkey(
+            await OpenOrders.getDerivedOOAccountPubkey(
               this.program.provider.wallet.publicKey,
               marketTo,
               DEX_PID,
@@ -329,7 +329,7 @@ export class Swap {
         if (!ooAccsTo[0]) {
           // const ooTo = new Account();
           const { ooAccountPubkey, ooAccountSeed } =
-            await OpenOrders.getDerivedOOAcountPubkey(
+            await OpenOrders.getDerivedOOAccountPubkey(
               this.program.provider.wallet.publicKey,
               marketTo,
               DEX_PID,
@@ -711,7 +711,7 @@ export class Swap {
       // signers.push(oo);
       // openOrders = oo.publicKey;
       const { ooAccountPubkey, ooAccountSeed } =
-        await OpenOrders.getDerivedOOAcountPubkey(
+        await OpenOrders.getDerivedOOAccountPubkey(
           this.program.provider.wallet.publicKey,
           marketClient.address,
           DEX_PID,
