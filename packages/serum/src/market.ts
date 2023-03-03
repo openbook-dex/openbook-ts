@@ -396,6 +396,7 @@ export class Market {
     connection: Connection,
     ownerAddress: PublicKey,
     cacheDurationMs = 0,
+    forceSeedAccount: boolean = false,
   ): Promise<OpenOrders[]> {
     const strOwner = ownerAddress.toBase58();
     const now = new Date().getTime();
@@ -410,6 +411,7 @@ export class Market {
       this.address,
       ownerAddress,
       this._programId,
+      forceSeedAccount,
     );
     this._openOrdersAccountsCache[strOwner] = {
       accounts: openOrdersAccountsForOwner,
@@ -703,9 +705,6 @@ export class Market {
 
     let openOrdersAddress: PublicKey;
     if (openOrdersAccounts.length === 0) {
-      // const marketAddress = this.address.toBase58();
-      // const seed = marketAddress.slice(0, 32);
-
       let account;
 
       if (openOrdersAccount) {
@@ -1737,6 +1736,7 @@ export class OpenOrders {
     marketAddress: PublicKey,
     ownerAddress: PublicKey,
     programId: PublicKey,
+    forceSeedAccount: boolean = false,
   ): Promise<OpenOrders[]> {
     // Try loading seed based accounts
     const { ooAccountPubkey } = await this.getDerivedOOAccountPubkey(
@@ -1747,8 +1747,12 @@ export class OpenOrders {
     const ooAccountInfo = await connection.getAccountInfo(ooAccountPubkey);
     if (ooAccountInfo) {
       return [
-        OpenOrders.fromAccountInfo(ownerAddress, ooAccountInfo, programId),
+        OpenOrders.fromAccountInfo(ooAccountPubkey, ooAccountInfo, programId),
       ];
+    }
+
+    if (forceSeedAccount) {
+      return [];
     }
 
     // Fallback to legacy gPA loading
