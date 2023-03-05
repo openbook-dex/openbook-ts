@@ -222,7 +222,6 @@ export class Swap {
     }
     // Direct swap on USD(x).
     else if (toMint.equals(USDC_PUBKEY) || toMint.equals(USDT_PUBKEY)) {
-      // const openOrders = new Account();
       const marketAddress = await this.swapMarkets.getMarketAddressIfNeeded(
         toMint,
         fromMint,
