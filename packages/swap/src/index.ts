@@ -318,8 +318,7 @@ export class Swap {
 
         // No open orders account for the to market, so make it.
         if (!ooAccsTo[0]) {
-          // const ooTo = new Account();
-          const account = await OpenOrders.getDerivedOOAccountPubkey(
+          const ooTo = await OpenOrders.getDerivedOOAccountPubkey(
             this.program.provider.wallet.publicKey,
             marketTo,
             DEX_PID,
@@ -329,15 +328,15 @@ export class Swap {
               this.program.provider.connection,
               marketTo,
               this.program.provider.wallet.publicKey,
-              account.publicKey,
+              ooTo.publicKey,
               DEX_PID,
-              account.seed,
+              ooTo.seed,
             ),
           );
           ixs.push(
             this.program.instruction.initAccount({
               accounts: {
-                openOrders: account.publicKey,
+                openOrders: ooTo.publicKey,
                 authority: this.program.provider.wallet.publicKey,
                 market: marketTo,
                 dexProgram: DEX_PID,
@@ -696,10 +695,7 @@ export class Swap {
 
     // Create the open orders account, if needed.
     if (needsOpenOrders) {
-      // const oo = new Account();
-      // signers.push(oo);
-      // openOrders = oo.publicKey;
-      const account = await OpenOrders.getDerivedOOAccountPubkey(
+      const ooAccount = await OpenOrders.getDerivedOOAccountPubkey(
         this.program.provider.wallet.publicKey,
         marketClient.address,
         DEX_PID,
@@ -709,9 +705,9 @@ export class Swap {
           this.program.provider.connection,
           marketClient.address,
           this.program.provider.wallet.publicKey,
-          account.publicKey,
+          ooAccount.publicKey,
           DEX_PID,
-          account.seed,
+          ooAccount.seed,
         ),
       );
     }
