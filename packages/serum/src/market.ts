@@ -710,16 +710,11 @@ export class Market {
       if (openOrdersAccount) {
         account = openOrdersAccount;
       } else {
-        const { ooAccountPubkey, ooAccountSeed } =
-          await OpenOrders.getDerivedOOAccountPubkey(
-            ownerAddress,
-            this.address,
-            this.programId,
-          );
-        account = {
-          publicKey: ooAccountPubkey,
-          seed: ooAccountSeed,
-        };
+        account = await OpenOrders.getDerivedOOAccountPubkey(
+          ownerAddress,
+          this.address,
+          this.programId,
+        );
       }
       transaction.add(
         await OpenOrders.makeCreateAccountTransaction(
@@ -732,7 +727,6 @@ export class Market {
         ),
       );
       openOrdersAddress = account.publicKey;
-      // signers.push(ownerAddress);
       // refresh the cache of open order accounts on next fetch
       this._openOrdersAccountsCache[ownerAddress.toBase58()].ts = 0;
     } else if (openOrdersAccount) {
@@ -1702,7 +1696,7 @@ export class OpenOrders {
       seed,
       programId,
     );
-    return { ooAccountPubkey: publicKey, ooAccountSeed: seed };
+    return { publicKey, seed };
   }
 
   static async findForOwner(
@@ -1739,15 +1733,15 @@ export class OpenOrders {
     forceSeedAccount: boolean = false,
   ): Promise<OpenOrders[]> {
     // Try loading seed based accounts
-    const { ooAccountPubkey } = await this.getDerivedOOAccountPubkey(
+    const account = await this.getDerivedOOAccountPubkey(
       ownerAddress,
       marketAddress,
       programId,
     );
-    const ooAccountInfo = await connection.getAccountInfo(ooAccountPubkey);
+    const ooAccountInfo = await connection.getAccountInfo(account.publicKey);
     if (ooAccountInfo) {
       return [
-        OpenOrders.fromAccountInfo(ooAccountPubkey, ooAccountInfo, programId),
+        OpenOrders.fromAccountInfo(account.publicKey, ooAccountInfo, programId),
       ];
     }
 
