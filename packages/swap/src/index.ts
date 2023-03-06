@@ -190,7 +190,7 @@ export class Swap {
         fromMint,
         toMint,
       );
-      const account = await OpenOrders.getDerivedOOAccountPubkey(
+      const openOrders = await OpenOrders.getDerivedOOAccountPubkey(
         this.program.provider.wallet.publicKey,
         marketAddress,
         DEX_PID,
@@ -200,15 +200,15 @@ export class Swap {
           this.program.provider.connection,
           marketAddress,
           this.program.provider.wallet.publicKey,
-          account.publicKey,
+          openOrders.publicKey,
           DEX_PID,
-          account.seed,
+          openOrders.seed,
         ),
       );
       tx.add(
         this.program.instruction.initAccount({
           accounts: {
-            openOrders: account.publicKey,
+            openOrders: openOrders.publicKey,
             authority: this.program.provider.wallet.publicKey,
             market: marketAddress,
             dexProgram: DEX_PID,
@@ -223,7 +223,7 @@ export class Swap {
         toMint,
         fromMint,
       );
-      const account = await OpenOrders.getDerivedOOAccountPubkey(
+      const openOrders = await OpenOrders.getDerivedOOAccountPubkey(
         this.program.provider.wallet.publicKey,
         marketAddress,
         DEX_PID,
@@ -233,15 +233,15 @@ export class Swap {
           this.program.provider.connection,
           marketAddress,
           this.program.provider.wallet.publicKey,
-          account.publicKey,
+          openOrders.publicKey,
           DEX_PID,
-          account.seed,
+          openOrders.seed,
         ),
       );
       tx.add(
         this.program.instruction.initAccount({
           accounts: {
-            openOrders: account.publicKey,
+            openOrders: openOrders.publicKey,
             authority: this.program.provider.wallet.publicKey,
             market: marketAddress,
             dexProgram: DEX_PID,
@@ -288,7 +288,7 @@ export class Swap {
 
         // No open orders account for the from market, so make it.
         if (!ooAccsFrom[0]) {
-          const account = await OpenOrders.getDerivedOOAccountPubkey(
+          const ooFrom = await OpenOrders.getDerivedOOAccountPubkey(
             this.program.provider.wallet.publicKey,
             marketTo,
             DEX_PID,
@@ -298,15 +298,15 @@ export class Swap {
               this.program.provider.connection,
               marketFrom,
               this.program.provider.wallet.publicKey,
-              account.publicKey,
+              ooFrom.publicKey,
               DEX_PID,
-              account.seed,
+              ooFrom.seed,
             ),
           );
           ixs.push(
             this.program.instruction.initAccount({
               accounts: {
-                openOrders: account.publicKey,
+                openOrders: ooFrom.publicKey,
                 authority: this.program.provider.wallet.publicKey,
                 market: marketFrom,
                 dexProgram: DEX_PID,
