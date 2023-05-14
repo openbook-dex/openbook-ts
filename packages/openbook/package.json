@@ -1,6 +1,6 @@
 {
   "name": "@openbook-dex/openbook",
-  "version": "0.0.4",
+  "version": "0.0.6",
   "description": "Library for interacting with the openbook dex",
   "license": "MIT",
   "repository": "openbook-dex/openbook-ts",

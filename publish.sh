@@ -12,9 +12,5 @@ cd ../common
 npm install && npm publish $@
 cd ../token
 npm install && npm publish $@
-cd ../pool
-npm install && npm publish $@
-cd ../spl-token-swap
-npm install && npm publish $@
 cd ../swap
 npm install && npm publish $@

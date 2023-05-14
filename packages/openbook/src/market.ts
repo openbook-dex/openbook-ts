@@ -396,7 +396,7 @@ export class Market {
     connection: Connection,
     ownerAddress: PublicKey,
     cacheDurationMs = 0,
-    forceSeedAccount: boolean = false,
+    forceSeedAccount = false,
   ): Promise<OpenOrders[]> {
     const strOwner = ownerAddress.toBase58();
     const now = new Date().getTime();
@@ -1730,7 +1730,7 @@ export class OpenOrders {
     marketAddress: PublicKey,
     ownerAddress: PublicKey,
     programId: PublicKey,
-    forceSeedAccount: boolean = false,
+    forceSeedAccount = false,
   ): Promise<OpenOrders[]> {
     // Try loading seed based accounts
     const account = await this.getDerivedOOAccountPubkey(
@@ -1929,7 +1929,6 @@ export interface Order {
 function getPriceFromKey(key) {
   return key.ushrn(64);
 }
-
 
 function divideBnToNumber(numerator: BN, denominator: BN): number {
   if (numerator.bitLength() <= 53 && denominator.bitLength() <= 53)

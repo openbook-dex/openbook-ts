@@ -113,9 +113,7 @@ export class Slab {
     return this.items(false);
   }
 
-  *items(
-    descending = false,
-  ): Generator<{
+  *items(descending = false): Generator<{
     ownerSlot: number;
     key: BN;
     owner: PublicKey;
