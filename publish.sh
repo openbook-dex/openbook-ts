@@ -1,16 +1,16 @@
 #!/bin/bash
 
 cd packages/associated-token
-npm install && npm publish $@
+yarn install && yarn publish $@
 cd ../borsh
-npm install && npm publish $@
+yarn install && yarn publish $@
 cd ../tokens
-npm install && npm publish $@
+yarn install && yarn publish $@
 cd ../openbook
-npm install && npm publish $@
+yarn install && yarn publish $@
 cd ../common
-npm install && npm publish $@
+yarn install && yarn publish $@
 cd ../token
-npm install && npm publish $@
+yarn install && yarn publish $@
 cd ../swap
-npm install && npm publish $@
+yarn install && yarn publish $@
