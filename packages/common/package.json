@@ -1,6 +1,6 @@
 {
   "name": "@openbook-dex/common",
-  "version": "0.0.4",
+  "version": "0.0.7",
   "description": "Openbook common utilities",
   "main": "dist/lib/index.js",
   "types": "dist/lib/index.d.ts",
@@ -22,7 +22,7 @@
     "prepack": "yarn clean && yarn build"
   },
   "dependencies": {
-    "@openbook-dex/openbook": "0.0.4",
+    "@openbook-dex/openbook": "0.0.7",
     "bn.js": "^5.1.2",
     "superstruct": "0.8.3"
   },
