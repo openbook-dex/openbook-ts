@@ -676,7 +676,7 @@ export class Swap {
       DEX_PID,
     );
     const [vaultSigner] = await getVaultOwnerAndNonce(marketClient.address);
-    let openOrders = await (async () => {
+    const openOrders = await (async () => {
       const openOrders = await OpenOrders.findForMarketAndOwner(
         this.program.provider.connection,
         marketClient.address,

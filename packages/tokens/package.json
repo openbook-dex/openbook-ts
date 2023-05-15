@@ -1,6 +1,6 @@
 {
   "name": "@openbook-dex/tokens",
-  "version": "0.0.4",
+  "version": "0.0.7",
   "description": "Openbook tokens",
   "main": "dist/index.umd.js",
   "module": "dist/index.es5.js",
@@ -10,11 +10,11 @@
     "access": "public"
   },
   "scripts": {
-    "build": "npm run build:node && npm run build:browser",
-    "build:node": "npx tsc -b && npx rollup -c rollup/rollup.config.ts",
-    "build:browser": "npx tsc -b && npx rollup -c rollup/rollup.config.browser.ts",
-    "coverage": "npx jest --coverage test",
-    "prepack": "npm run build"
+    "build": "yarn build:node && yarn build:browser",
+    "build:node": "tsc -b && rollup -c rollup/rollup.config.ts",
+    "build:browser": "tsc -b && rollup -c rollup/rollup.config.browser.ts",
+    "coverage": "jest --coverage test",
+    "prepack": "yarn build"
   },
   "jest": {
     "transform": {

@@ -1,5 +1,0 @@
-const lib = require('./lib/index.js');
-const solana = require('@solana/web3.js');
-const serum = require('@openbook-dex/openbook');
-
-const connection = new solana.Connection('https://solana-api.projectserum.com');
