@@ -43,7 +43,6 @@
 To get started first install the required build tools:
 
 ```
-npm install -g lerna
 npm install -g yarn
 ```
 
