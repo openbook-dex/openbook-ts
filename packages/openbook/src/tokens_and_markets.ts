@@ -1,5 +1,4 @@
 import { PublicKey } from '@solana/web3.js';
-import Markets from './markets.json';
 import Tokens from '@openbook-dex/tokens/src/mainnet-beta.json';
 
 export const PROGRAM_LAYOUT_VERSIONS = {
@@ -23,16 +22,3 @@ export const TOKEN_MINTS: Array<{
   };
 });
 
-export const MARKETS: Array<{
-  address: PublicKey;
-  name: string;
-  programId: PublicKey;
-  deprecated: boolean;
-}> = Markets.map((market) => {
-  return {
-    address: new PublicKey(market.address),
-    name: market.name,
-    programId: new PublicKey(market.programId),
-    deprecated: market.deprecated,
-  };
-});
