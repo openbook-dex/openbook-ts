@@ -10,5 +10,3 @@ export const PROGRAM_LAYOUT_VERSIONS = {
 export function getLayoutVersion(programId: PublicKey) {
   return PROGRAM_LAYOUT_VERSIONS[programId.toString()] || 3;
 }
-
-
