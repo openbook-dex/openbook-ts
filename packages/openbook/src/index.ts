@@ -17,7 +17,7 @@ export {
   NEW_ORDER_V3_OWNER_INDEX,
 } from './instructions';
 export { getFeeTier, getFeeRates, supportsSrmFeeDiscounts } from './fees';
-export { TOKEN_MINTS, getLayoutVersion } from './tokens_and_markets';
+export { getLayoutVersion } from './tokens_and_markets';
 export {
   decodeEventQueue,
   decodeRequestQueue,
