@@ -1,6 +1,6 @@
 [![npm (scoped)](https://img.shields.io/npm/v/@project-serum/serum)](https://www.npmjs.com/package/@openbook-dex/openbook)
 
-# Serum JS Client Library
+# OpenBook JS Client Library
 
 JavaScript client library for interacting with the OpenBook DEX
 
